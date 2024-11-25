@@ -3,16 +3,18 @@ import os
 import tensorflow as tf
 from tensorflow.keras.utils import load_img, img_to_array
 import numpy as np
+from flask_cors import CORS  # Import CORS
 
 # Initialize Flask app
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Load the trained model
 MODEL_PATH = "./rubberbugs_model.h5"  # Path to your saved model
 model = tf.keras.models.load_model(MODEL_PATH)
 
 # Define class names
-class_names = ["mealybugs", "cockchafer_grubs"]
+class_names = ["Cockchafer Grubs","Mealy Bugs",]
 
 # Upload folder
 UPLOAD_FOLDER = './uploads'
