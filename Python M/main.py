@@ -14,7 +14,7 @@ MODEL_PATH = './leaf_disease_model.h5'
 model = tf.keras.models.load_model(MODEL_PATH)
 class_names = ["birdeyespot", "corynespora"]
 
-@app.route('/predict', methods=['POST'])
+@app.route('/disease', methods=['POST'])
 def predict():
     """
     Predict the class of a leaf disease from an uploaded image.
