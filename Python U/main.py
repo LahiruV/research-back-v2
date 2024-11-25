@@ -27,7 +27,7 @@ def health():
     return jsonify({'status': 'ok', 'message': 'API is running'}), 200
 
 # API Endpoint: Predict
-@app.route('/predict', methods=['POST'])
+@app.route('/bug', methods=['POST'])
 def predict():
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'}), 400
