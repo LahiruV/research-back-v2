@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import tensorflow as tf
 from tensorflow.keras.utils import load_img, img_to_array
 import numpy as np
-from flask_cors import CORS  # Import CORS
+from flask_cors import CORS  # Enable CORS
 from PIL import Image  # For direct image processing
 
 # Initialize Flask app
@@ -11,10 +11,14 @@ CORS(app)  # Enable CORS for all routes
 
 # Load the trained model
 MODEL_PATH = "./rubberbugs_model.h5"  # Path to your saved model
-model = tf.keras.models.load_model(MODEL_PATH)
+try:
+    model = tf.keras.models.load_model(MODEL_PATH)
+    print("Model loaded successfully.")
+except Exception as e:
+    print(f"Error loading model: {e}")
 
 # Define class names
-class_names = ["Cockchafer Grubs", "Mealy Bugs"]
+class_names = ["Cockchafer Grubs", "Mealy Bugs", "Scale Insects"]
 
 # API Endpoint: Health Check
 @app.route('/health', methods=['GET'])
@@ -33,6 +37,7 @@ def predict():
 
     # Preprocess the image directly from memory
     try:
+        # Load and preprocess the image
         img = Image.open(file.stream).convert('RGB')  # Open the uploaded image and ensure it's in RGB mode
         img = img.resize((224, 224))  # Resize image to 224x224
         img_array = img_to_array(img) / 255.0  # Normalize pixel values
@@ -51,10 +56,15 @@ def predict():
             'class': predicted_class,
             'confidence': float(confidence)
         }
-        return jsonify(result)
+        return jsonify(result), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Error handling for unsupported routes
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({'error': 'Endpoint not found'}), 404
+
 # Run the server
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5003)
