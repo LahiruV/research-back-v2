@@ -12,7 +12,7 @@ CORS(app)  # Enable CORS for all routes
 # Load the trained model
 MODEL_PATH = './leaf_disease_model.h5'
 model = tf.keras.models.load_model(MODEL_PATH)
-class_names = ["birdeyespot", "corynespora"]
+class_names = ["Birdeyespot", "Corynespora"]
 
 @app.route('/disease', methods=['POST'])
 def predict():
