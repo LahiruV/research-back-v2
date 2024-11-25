@@ -18,7 +18,7 @@ except Exception as e:
     print(f"Error loading model: {e}")
 
 # Define class names
-class_names = ["birdeyespot", "corynespora"]
+class_names = ["Birdeyespot", "Corynespora"]
 
 # API Endpoint: Health Check
 @app.route('/health', methods=['GET'])
