@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
 import os
+from io import BytesIO
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -27,8 +28,8 @@ def predict():
         return jsonify({'error': 'No file selected for uploading'}), 400
 
     try:
-        # Preprocess the uploaded image
-        img = load_img(file, target_size=(224, 224))
+        # Read the uploaded image file
+        img = load_img(BytesIO(file.read()), target_size=(224, 224))  # Use BytesIO to read FileStorage
         img_array = img_to_array(img) / 255.0  # Normalize pixel values
         img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
 
